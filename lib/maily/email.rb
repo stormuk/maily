@@ -68,11 +68,15 @@ module Maily
     def call
       *args = arguments && arguments.map { |arg| arg.respond_to?(:call) ? arg.call : arg }
 
-      if args == [nil]
+      mail = if args == [nil]
         mailer_klass.public_send(name)
       else
         mailer_klass.public_send(name, *args)
       end
+
+      Premailer::Rails::Hook.perform(mail) if defined?(Premailer::Rails::Hook)
+
+      mail
     end
 
     def base_path(part)

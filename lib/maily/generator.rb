@@ -17,7 +17,7 @@ module Maily
         end
 
         if _hooks.present?
-          hooks << "\nMaily.hooks_for('#{mailer.name.classify}') do |mailer|"
+          hooks << "\nMaily.hooks_for('#{mailer.klass}') do |mailer|"
           hooks << _hooks
           hooks << "end"
         end

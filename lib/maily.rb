@@ -7,7 +7,8 @@ require 'maily/generator'
 module Maily
   class << self
     attr_accessor :enabled, :allow_edition, :allow_delivery, :available_locales,
-                  :base_controller, :http_authorization, :hooks_path, :welcome_message
+                  :base_controller, :http_authorization, :hooks_path, :welcome_message,
+                  :mailer_root_path, :mailer_paths, :explicit_hooks_only
 
     def init!
       self.enabled            = Rails.env.production? ? false : true
@@ -18,12 +19,18 @@ module Maily
       self.http_authorization = nil
       self.hooks_path         = "lib/maily_hooks.rb"
       self.welcome_message    = nil
+
+      self.mailer_root_path   = Rails.root + 'app/mailers/'
+      self.mailer_paths       = [Rails.root + 'app/mailers/*.rb']
+      self.explicit_hooks_only = false
     end
 
     def load_emails_and_hooks
       # Load emails from file system
-      Dir[Rails.root + 'app/mailers/*.rb'].each do |mailer|
-        klass_name = File.basename(mailer, '.rb')
+      Dir.glob(mailer_paths).each do |mailer|
+        absolute_path = Pathname.new(File.expand_path(mailer))
+        relative_path = absolute_path.relative_path_from(mailer_root_path)
+        klass_name = relative_path.to_s.split('/').map {|part| File.basename(part, '.rb').camelize }.join('::')
         Maily::Mailer.new(klass_name)
       end
 
@@ -32,9 +39,8 @@ module Maily
       require hooks_file_path if File.exist?(hooks_file_path)
     end
 
-    def hooks_for(mailer_name)
-      mailer_name = mailer_name.underscore
-      mailer = Maily::Mailer.find(mailer_name) || Maily::Mailer.new(mailer_name)
+    def hooks_for(klass_name)
+      mailer = Maily::Mailer.find(klass_name) || Maily::Mailer.new(klass_name)
 
       yield(mailer) if block_given?
     end

@@ -3,15 +3,15 @@ module Maily
     cattr_accessor :collection
     attr_accessor :name, :emails, :klass
 
-    def initialize(name)
-      self.name   = name
-      self.klass  = name.camelize.constantize
+    def initialize(klass)
+      self.name   = klass.to_s.underscore.humanize.gsub('/', ': ').gsub(/ mailer\Z/, '').titlecase
+      self.klass  = klass.constantize
       self.emails = {}
 
       parse_emails
 
       self.class.collection ||= {}
-      self.class.collection[name] = self
+      self.class.collection[klass.to_s] = self
     end
 
     def self.all
@@ -25,6 +25,10 @@ module Maily
 
     def self.find(mailer_name)
       all[mailer_name]
+    end
+
+    def to_s
+      klass.respond_to?(:maily_name) ? klass.maily_name : name
     end
 
     def find_email(email_name)
