@@ -8,7 +8,7 @@ module Maily
   class << self
     attr_accessor :enabled, :allow_edition, :allow_delivery, :available_locales,
                   :base_controller, :http_authorization, :hooks_path, :welcome_message,
-                  :mailer_root_path, :mailer_paths, :explicit_hooks_only
+                  :mailer_root_path, :mailer_paths
 
     def init!
       self.enabled            = Rails.env.production? ? false : true
@@ -22,7 +22,6 @@ module Maily
 
       self.mailer_root_path   = Rails.root + 'app/mailers/'
       self.mailer_paths       = [Rails.root + 'app/mailers/*.rb']
-      self.explicit_hooks_only = false
     end
 
     def load_emails_and_hooks
