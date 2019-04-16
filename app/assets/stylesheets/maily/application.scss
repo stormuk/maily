@@ -236,6 +236,8 @@ footer.footer {
 aside.sidebar {
   float: left;
   width: 20%;
+  max-height: 80vh;
+  overflow-y: scroll;
 
   section.nav_list {
     margin: 0 0 1.5em 1.5em;
