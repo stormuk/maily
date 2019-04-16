@@ -1,12 +1,17 @@
 <%= email_description(@maily_email) %>
+<% has_multiple_locales = Maily.available_locales.present? && Maily.available_locales.size > 1 %>
+<% edit_allowed = Maily.allowed_action?('edit') %>
+<% deliver_allowed = Maily.allowed_action?('deliver') %>
 
 <ul class="action_bar">
-  <li>
-    <%= link_to 'Edit', edit_maily_email_path(mailer: params[:mailer], email: params[:email], part: params[:part]) %>
-  </li>
+  <% if edit_allowed %>
+    <li>
+      <%= link_to 'Edit', edit_maily_email_path(mailer: params[:mailer], email: params[:email], part: params[:part]) %>
+    </li>
+  <% end %>
 
-  <li class="languages">
-    <% if Maily.available_locales.present? %>
+  <% if has_multiple_locales %>
+    <li class="languages">
       <ul>
         <li>
           <%= icon 'globe' %> Languages
@@ -15,31 +20,35 @@
           <li><%= link_to locale.upcase, url_for(params.to_unsafe_h.merge(locale: locale)) %></li>
         <% end %>
       </ul>
-    <% end %>
-  </li>
+    </li>
+  <% end %>
 
-  <li class="splitter">|</li>
+  <% if edit_allowed && has_multiple_locales %>
+    <li class="splitter">|</li>
+  <% end %>
 
-  <li>
-    <%= form_tag(deliver_maily_email_path(mailer: params[:mailer], email: params[:email], locale: params[:locale]), method: :post, class: 'mail_deliver') do %>
-      <ul>
-        <li>Send to</li>
-        <li><%= email_field_tag :to, nil, placeholder: "Enter email", required: true %></li>
-        <li><%= submit_tag 'Send', class: 'button' %></li>
-      </ul>
-    <% end %>
-  </li>
+  <% if deliver_allowed %>
+    <li>
+      <%= form_tag(deliver_maily_email_path(mailer: params[:mailer], email: params[:email], locale: params[:locale]), method: :post, class: 'mail_deliver') do %>
+        <ul>
+          <li>Send to</li>
+          <li><%= email_field_tag :to, nil, placeholder: "Enter email", required: true %></li>
+          <li><%= submit_tag 'Send', class: 'button' %></li>
+        </ul>
+      <% end %>
+    </li>
+  <% end %>
 </ul>
 
 <div class="mail_preview">
-  <ul class="mail_details">
-    <% if @email.subject %><li><b>Subject</b> <%= @email.subject %></li><% end %>
-    <% if @email.from %><li><b>From</b> <%= @email.from.join(', ') %></li><% end %>
-    <% if @email.to %><li><b>To</b> <%= @email.to.join(', ') %></li><% end %>
-    <% if @email.cc %><li><b>Cc</b> <%= @email.cc.join(', ') %></li><% end %>
-    <% if @email.bcc %><li><b>Bcc</b> <%= @email.bcc.join(', ') %></li><% end %>
-    <% if @email.reply_to %><li><b>Reply to</b> <%= @email.reply_to.join(', ') %></li><% end %>
-  </ul>
+  <table class="mail_details">
+    <% if @email.subject %><tr><th>Subject</th><td> <%= @email.subject %><td></tr><% end %>
+    <% if @email.from %><tr><th>From</th><td> <%= @email.from.join(', ') %><td></tr><% end %>
+    <% if @email.to %><tr><th>To</th><td> <%= @email.to.join(', ') %><td></tr><% end %>
+    <% if @email.cc %><tr><th>CC</th><td> <%= @email.cc.join(', ') %><td></tr><% end %>
+    <% if @email.bcc %><tr><th>BCC</th><td> <%= @email.bcc.join(', ') %><td></tr><% end %>
+    <% if @email.reply_to %><tr><th>Reply to</th><td> <%= @email.reply_to.join(', ') %><td></tr><% end %>
+  </table>
 
   <% if @email.html_part && @email.text_part %>
     <ul class="format_mail">

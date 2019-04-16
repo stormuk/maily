@@ -142,12 +142,14 @@ footer.footer {
 
     .mail_details {
       margin: 0 0 1em 0;
-      padding: 0;
       color: $darkgrey;
-      list-style: none;
       font-size: .8em;
 
-      li { line-height: 1.5em; }
+      th {
+        padding-right: 0.5em;
+        text-align: right;
+      }
+      th, td { line-height: 1.5em; }
     }
 
     .mail_attachments {
