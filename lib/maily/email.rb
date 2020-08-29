@@ -1,11 +1,12 @@
 module Maily
   class Email
-    attr_accessor :name, :mailer, :arguments, :template_path, :template_name, :description
+    attr_accessor :name, :mailer, :arguments, :template_path, :template_name, :description, :with_params
 
     def initialize(name, mailer)
       self.name          = name
       self.mailer        = mailer
       self.arguments     = nil
+      self.with_params   = nil
       self.template_path = mailer.name
       self.template_name = name
       self.description   = nil
@@ -13,6 +14,15 @@ module Maily
 
     def mailer_klass
       mailer.klass
+    end
+
+    def parameterized_mailer_klass
+      if Rails.version >= '5.1'
+        params = with_params && with_params.transform_values { |param| param.respond_to?(:call) ? param.call : param }
+        mailer_klass.with(params)
+      else
+        mailer_klass
+      end
     end
 
     def parameters
@@ -46,8 +56,6 @@ module Maily
     end
 
     def register_hook(*args)
-      args = args.flatten
-
       if args.last.is_a?(Hash)
         self.description = args.last.delete(:description)
 
@@ -59,6 +67,8 @@ module Maily
           self.template_name = tpl_name
         end
 
+        self.with_params = args.last.delete(:with_params)
+
         args.pop
       end
 
@@ -69,9 +79,9 @@ module Maily
       *args = arguments && arguments.map { |arg| arg.respond_to?(:call) ? arg.call : arg }
 
       mail = if args == [nil]
-        mailer_klass.public_send(name)
+        parameterized_mailer_klass.public_send(name)
       else
-        mailer_klass.public_send(name, *args)
+        parameterized_mailer_klass.public_send(name, *args)
       end
 
       Premailer::Rails::Hook.perform(mail) if defined?(Premailer::Rails::Hook)

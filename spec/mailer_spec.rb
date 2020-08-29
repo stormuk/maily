@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Maily::Mailer do
+RSpec.describe Maily::Mailer do
   let(:mailer) { Maily::Mailer.find('notifier') }
 
   it "should load mailers" do
@@ -8,7 +6,7 @@ describe Maily::Mailer do
   end
 
   it "should build emails" do
-    expect(mailer.emails.size).to eq(8)
+    expect(mailer.emails.size).to eq(11)
   end
 
   it "should find mailers by name" do

@@ -7,6 +7,15 @@ class Notifier < ApplicationMailer
     mail
   end
 
+  def new_message
+    @message = params[:message]
+    mail
+  end
+
+  def notify(emails)
+    mail
+  end
+
   def recommendation(email)
     mail template_path: 'notifications'
   end
@@ -28,6 +37,11 @@ class Notifier < ApplicationMailer
   end
 
   def with_slim_template
+    mail
+  end
+
+  def with_inline_attachments
+    attachments.inline['image.jpg'] = File.read(Rails.root.join("public/favicon.ico"))
     mail
   end
 end

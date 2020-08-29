@@ -1,3 +1,3 @@
 module Maily
-  VERSION = "0.9.1"
+  VERSION = "0.12.3"
 end

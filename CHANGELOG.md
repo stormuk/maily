@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.3]
+
+- Styles: fix input placeholder color in Firefox
+
+## [0.12.2]
+
+- Refine logo and UI (#45)
+
+## [0.12.1]
+
+- Sprockets v4 fixes (#44)
+
+## [0.12.0]
+
+- Support inline attachments (#30)
+
+## [0.11.0]
+
+- Support arrays in hooks (#42)
+- Drop Ruby 2.3 (EOL) from CI
+
+## [0.10.1]
+
+- UI: fix iframe (onload) resize
+
+## [0.10.0]
+
+- Support `ActionMailer::Parameterized` (#39)
+- UI tweaks
+
 ## [0.9.1]
 
 - Properly display text parts by respecting break lines
@@ -109,6 +139,13 @@ All notable changes to this project will be documented in this file.
 
 - First real usable release :tada:
 
+[0.12.3]: https://github.com/markets/maily/compare/v0.12.2...v0.12.3
+[0.12.2]: https://github.com/markets/maily/compare/v0.12.1...v0.12.2
+[0.12.1]: https://github.com/markets/maily/compare/v0.12.0...v0.12.1
+[0.12.0]: https://github.com/markets/maily/compare/v0.11.0...v0.12.0
+[0.11.0]: https://github.com/markets/maily/compare/v0.10.1...v0.11.0
+[0.10.1]: https://github.com/markets/maily/compare/v0.10.0...v0.10.1
+[0.10.0]: https://github.com/markets/maily/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/markets/maily/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/markets/maily/compare/v0.8.2...v0.9.0
 [0.8.2]: https://github.com/markets/maily/compare/v0.8.1...v0.8.2
@@ -122,8 +159,8 @@ All notable changes to this project will be documented in this file.
 [0.6.1]: https://github.com/markets/maily/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/markets/maily/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/markets/maily/compare/v0.4.0...v0.5.0
-[0.4.0]: https://github.com/markets/maily/compare/v0.4.0...v0.5.0
-[0.3.5]: https://github.com/markets/maily/compare/v0.3.5...v0.4.0
+[0.4.0]: https://github.com/markets/maily/compare/v0.3.5...v0.4.0
+[0.3.5]: https://github.com/markets/maily/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/markets/maily/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/markets/maily/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/markets/maily/compare/v0.3.1...v0.3.2

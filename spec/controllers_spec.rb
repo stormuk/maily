@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Maily::EmailsController, type: :controller do
+RSpec.describe Maily::EmailsController, type: :controller do
   render_views
 
   # Rails 4 compatibility
@@ -74,6 +72,12 @@ describe Maily::EmailsController, type: :controller do
       compatible_get :raw, mailer: 'notifier', email: 'only_text'
 
       expect(response.body).to match("<p>Text part\n<br />with break lines</p>")
+    end
+
+    it 'renders inline attachments' do
+      compatible_get :raw, mailer: 'notifier', email: 'with_inline_attachments'
+
+      expect(response.body).to match("data:image/jpeg;base64")
     end
   end
 end

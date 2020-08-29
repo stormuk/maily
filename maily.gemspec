@@ -13,10 +13,14 @@ Gem::Specification.new do |s|
   s.files         = Dir["{app,config,lib}/**/*"] + %w[README.md CHANGELOG.md MIT-LICENSE]
   s.require_paths = ["lib"]
 
-  s.add_dependency "rails", ">= 3.0.0"
-  s.add_dependency "sassc-rails"
+  s.add_dependency "rails", ">= 4.2"
+
+  if RUBY_VERSION >= "2.5.0"
+    s.add_dependency "sassc-rails"
+  else
+    s.add_dependency "sass-rails", ">= 4", "< 6"
+  end
 
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "appraisal"
-  s.add_development_dependency "byebug"
 end

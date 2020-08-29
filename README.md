@@ -1,8 +1,14 @@
-# Maily
-
-[![Gem](https://img.shields.io/gem/v/maily.svg?style=flat-square)](https://rubygems.org/gems/maily)
-[![Build Status](https://travis-ci.org/markets/maily.svg?branch=master)](https://travis-ci.org/markets/maily)
-[![Maintainability](https://api.codeclimate.com/v1/badges/fff01b2137fd73070b14/maintainability)](https://codeclimate.com/github/markets/maily/maintainability)
+<div>
+  <p align="center">
+    <img src="https://raw.githubusercontent.com/markets/maily/master/support/images/logo.png">
+  </p>
+  <p align="center">
+    <a href="https://rubygems.org/gems/maily"><img src="https://img.shields.io/gem/v/maily.svg?style=flat-square"></a>
+    <a href="https://travis-ci.org/markets/maily"><img src="https://travis-ci.org/markets/maily.svg?branch=master"></a>
+    <a href="https://codeclimate.com/github/markets/maily/maintainability"><img src="https://api.codeclimate.com/v1/badges/fff01b2137fd73070b14/maintainability"></a>
+    <a href="https://github.com/markets/maily/blob/master/MIT-LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/markets/maily.svg?style=flat-square"></a>
+  </p>
+</div>
 
 Maily is a Rails Engine to manage, test and navigate through all your email templates of your app, being able to preview them directly in your browser.
 
@@ -20,11 +26,11 @@ Maily automatically picks up all your emails and make them accessible from a kin
 * Easy way (aka `hooks`) to define and customize data for emails
 * Generator to handle a comfortable installation
 
-![](screenshot.png)
+![](support/images/screenshot.png)
 
 ## Installation
 
-Add this line to you Gemfile:
+Add this line to your `Gemfile` and then run `bundle install`:
 
 ```ruby
 gem 'maily'
@@ -136,6 +142,18 @@ You are also able to hide emails:
 ```ruby
 Maily.hooks_for('Notifier') do |mailer|
   mailer.hide_email(:sensible_email, :secret_email)
+end
+```
+
+### Use `params`
+
+Support for [`ActionMailer::Parameterized`](https://api.rubyonrails.org/classes/ActionMailer/Parameterized.html) is possible via `with_params` hash:
+
+```ruby
+message = -> { 'Hello!' }
+
+Maily.hooks_for('Notifier') do |mailer|
+  mailer.register_hook(:new_message, with_params: { message: message })
 end
 ```
 
